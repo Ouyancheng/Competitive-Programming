@@ -1,4 +1,4 @@
-// Li Hong Sheng Gabriel's Competitive Programming Template v2017.8
+// Li Hong Sheng Gabriel's Competitive Programming Template v2017.7
 #include<bits/stdc++.h>
 //#include <ext/pb_ds/assoc_container.hpp>
 //#include <ext/pb_ds/tag_and_trait.hpp>
@@ -43,10 +43,6 @@ using namespace std;
 #define EPS 1e-10
 #define breakl "\n"
 #define MOD 1000000007
-#define lcstring(s) transform(all(s), s.begin(), ::tolower)
-#define ucstring(s) transform(all(s), s.begin(), ::toupper)
-#define lcchar(c) ((char) tolower(c))
-#define ucchar(c) ((char) toupper(c))
 
 // Uncomment the include files, namespace and type to use
 //typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> AVL;
@@ -61,7 +57,7 @@ ll lpow(ll x, int y) { if(!y)return 1;ll t=lpow(x,y/2);if(y&1)return(y>0)?x*t*t:
 int ipow(int x, int y) { if(!y)return 1;int t=ipow(x,y/2);if(y&1)return(y>0)?x*t*t:(t*t)/x;return t*t; }
 
 void split(vector<string> &tmp,string &line,char * buffer,char delim=' ') {
-	strcpy(buffer,line.c_str()); // buffer length must be at least |line| + 1
+	strcpy(buffer,line.c_str());
 	char * token = strtok(buffer,&delim);
 	while(token != 0) {
 		tmp.eb(string(token));
@@ -82,53 +78,49 @@ inline void fastio(int debug) {
 
 bool DRAFT = 1; // DO NOT REMOVE THIS LINE
 
-#define MAX_N 405
+#define MAX_N 100005
+#define MAX_D 100005
 
-int n,m,q,x,y,w;
-int graph[MAX_N][MAX_N];
+struct Lecturer {
+    int t,s;
+    Lecturer(int yy=0,int zz=0): t(yy), s(zz) {}
 
-void addEdge(int u,int v,int w) {
-	graph[u][v] = w;
-}
+    bool operator<(Lecturer o) const {
+        return s > o.s;
+    }
+};
 
-void calc() {
-	repn(k,n) {
-		repn(i,n) {
-			repn(j,n) {
-				if(graph[i][k] == inf32 || graph[k][j] == inf32) continue;
-				if(graph[i][j] > graph[i][k] + graph[k][j]) {
-					graph[i][j] = graph[i][k] + graph[k][j];
-				}
-			}
-		}
-	}
-}
-
-int solve(int u,int v) {
-	if(graph[u][v] == inf32) {
-		return -1;
-	}
-	return graph[x][y];
-}
+int n,di,ti,si,t,d;
+multiset<Lecturer> lec;
+vector<Lecturer> arr[MAX_N];
+ll ans;
 
 int main(void) {
 	fastio(0);
-	cin >> n >> m;
-	repn(i,n) repn(j,n) {
-		if(i == j) continue;
-		graph[i][j] = inf32;
-	}
-	repn(i,m) {
-		cin >> x >> y >> w;
-		x--,y--;
-		addEdge(x,y,w);
-	}
-	calc();
-	cin >> q;
-	repn(i,q) {
-		cin >> x >> y;
-		x--,y--;
-		cout << solve(x,y) << breakl;
-	}
-	return 0;
+    cin >> t;
+    while(t--) {
+        lec.clear();
+        ans = 0;
+        cin >> n >> d;
+        fill(arr,arr+d+1,vector<Lecturer>());
+        repn(i,n) {
+            cin >> di >> ti >> si;
+            arr[di].eb(ti,si);
+        }
+        repsn(i,1,d+1) {
+            for(auto e : arr[i]) {
+                lec.em(e);
+            }
+            if(sz(lec)) {
+                auto u = lec.begin();
+                lec.erase(u);
+                if(u->t - 1) lec.em(u->t-1,u->s);
+            }
+        }
+        for(auto u : lec) {
+            ans += 1LL*u.t*u.s;
+        }
+        cout << ans << breakl;
+    }
+    return 0;
 }

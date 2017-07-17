@@ -1,4 +1,4 @@
-// Li Hong Sheng Gabriel's Competitive Programming Template v2017.8
+// Li Hong Sheng Gabriel's Competitive Programming Template v2017.7
 #include<bits/stdc++.h>
 //#include <ext/pb_ds/assoc_container.hpp>
 //#include <ext/pb_ds/tag_and_trait.hpp>
@@ -43,10 +43,6 @@ using namespace std;
 #define EPS 1e-10
 #define breakl "\n"
 #define MOD 1000000007
-#define lcstring(s) transform(all(s), s.begin(), ::tolower)
-#define ucstring(s) transform(all(s), s.begin(), ::toupper)
-#define lcchar(c) ((char) tolower(c))
-#define ucchar(c) ((char) toupper(c))
 
 // Uncomment the include files, namespace and type to use
 //typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> AVL;
@@ -61,7 +57,7 @@ ll lpow(ll x, int y) { if(!y)return 1;ll t=lpow(x,y/2);if(y&1)return(y>0)?x*t*t:
 int ipow(int x, int y) { if(!y)return 1;int t=ipow(x,y/2);if(y&1)return(y>0)?x*t*t:(t*t)/x;return t*t; }
 
 void split(vector<string> &tmp,string &line,char * buffer,char delim=' ') {
-	strcpy(buffer,line.c_str()); // buffer length must be at least |line| + 1
+	strcpy(buffer,line.c_str());
 	char * token = strtok(buffer,&delim);
 	while(token != 0) {
 		tmp.eb(string(token));
@@ -82,53 +78,52 @@ inline void fastio(int debug) {
 
 bool DRAFT = 1; // DO NOT REMOVE THIS LINE
 
-#define MAX_N 405
+#define MAX_N 3005
+#define MAX_E 100005
 
-int n,m,q,x,y,w;
-int graph[MAX_N][MAX_N];
+struct triple {
+	int x,y,z;
+	triple(int xx=0,int yy=0,int zz=0): x(xx), y(yy), z(zz) {}
+};
 
-void addEdge(int u,int v,int w) {
-	graph[u][v] = w;
+int n,m,x,y,r,t;
+triple graph[MAX_E];
+int par[MAX_N];
+ll cost;
+
+int find(int u) {
+	return (par[u]==u ? u : par[u] = find(par[u]));
 }
 
-void calc() {
-	repn(k,n) {
-		repn(i,n) {
-			repn(j,n) {
-				if(graph[i][k] == inf32 || graph[k][j] == inf32) continue;
-				if(graph[i][j] > graph[i][k] + graph[k][j]) {
-					graph[i][j] = graph[i][k] + graph[k][j];
-				}
-			}
+bool cmp(const triple &t1,const triple &t2) {
+	if(t1.z < t2.z) {
+		return true;
+	} else if(t1.z == t2.z) {
+		if(t1.x + t1.y + t1.z < t2.x + t2.y + t2.z) {
+			return true;
 		}
 	}
-}
-
-int solve(int u,int v) {
-	if(graph[u][v] == inf32) {
-		return -1;
-	}
-	return graph[x][y];
+	return false;
 }
 
 int main(void) {
 	fastio(0);
 	cin >> n >> m;
-	repn(i,n) repn(j,n) {
-		if(i == j) continue;
-		graph[i][j] = inf32;
-	}
+	repsn(i,1,n+1) par[i] = i;
 	repn(i,m) {
-		cin >> x >> y >> w;
-		x--,y--;
-		addEdge(x,y,w);
+		cin >> x >> y >> r;
+		graph[i] = triple(x,y,r);
 	}
-	calc();
-	cin >> q;
-	repn(i,q) {
-		cin >> x >> y;
-		x--,y--;
-		cout << solve(x,y) << breakl;
+	sort(graph,graph+m,cmp);
+	repn(i,m) {
+		int u = graph[i].x, v = graph[i].y, c = graph[i].z;
+		if(find(u) != find(v)) {
+			par[find(u)] = find(v);
+			cost += c;
+			t++;
+		}
+		if(t == n) break;
 	}
+	cout << cost << breakl;
 	return 0;
 }

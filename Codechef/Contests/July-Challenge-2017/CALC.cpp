@@ -80,55 +80,41 @@ inline void fastio(int debug) {
 
 // End of Template
 
-bool DRAFT = 1; // DO NOT REMOVE THIS LINE
+bool DRAFT = 0; // DO NOT REMOVE THIS LINE
 
-#define MAX_N 405
+int n,b,t;
 
-int n,m,q,x,y,w;
-int graph[MAX_N][MAX_N];
-
-void addEdge(int u,int v,int w) {
-	graph[u][v] = w;
+ll profit(int k) {
+	int rem = b-(n-k)%b;
+	if((n-k)%b) k -= rem;
+	return k > 0 ? 1LL*k*((n-k)/b) : 0;
 }
 
-void calc() {
-	repn(k,n) {
-		repn(i,n) {
-			repn(j,n) {
-				if(graph[i][k] == inf32 || graph[k][j] == inf32) continue;
-				if(graph[i][j] > graph[i][k] + graph[k][j]) {
-					graph[i][j] = graph[i][k] + graph[k][j];
-				}
-			}
+ll solve() {
+	int lo = 1, hi = n;
+	ll ans = 0;
+	repn(i,100) {
+		if(lo > hi) break;
+		int ls = lo+(hi-lo)/3, rs = hi-(hi-lo)/3;
+		ll lp = profit(ls), rp = profit(rs);
+		if(lp < rp) {
+			lo = ls;
+		} else {
+			hi = rs;
 		}
 	}
-}
-
-int solve(int u,int v) {
-	if(graph[u][v] == inf32) {
-		return -1;
-	}
-	return graph[x][y];
+	if(lo > hi) swap(lo,hi);
+	repsn(i,lo,hi+1) ans = max(ans,profit(i));
+	return ans;
 }
 
 int main(void) {
 	fastio(0);
-	cin >> n >> m;
-	repn(i,n) repn(j,n) {
-		if(i == j) continue;
-		graph[i][j] = inf32;
-	}
-	repn(i,m) {
-		cin >> x >> y >> w;
-		x--,y--;
-		addEdge(x,y,w);
-	}
-	calc();
-	cin >> q;
-	repn(i,q) {
-		cin >> x >> y;
-		x--,y--;
-		cout << solve(x,y) << breakl;
+	cin >> t;
+	while(t--) {
+		cin >> n >> b;
+		ll ans1 = solve();
+		cout << ans1 << breakl;
 	}
 	return 0;
 }

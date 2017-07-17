@@ -1,4 +1,4 @@
-// Li Hong Sheng Gabriel's Competitive Programming Template v2017.8
+// Li Hong Sheng Gabriel's Competitive Programming Template v2017.7
 #include<bits/stdc++.h>
 //#include <ext/pb_ds/assoc_container.hpp>
 //#include <ext/pb_ds/tag_and_trait.hpp>
@@ -43,10 +43,6 @@ using namespace std;
 #define EPS 1e-10
 #define breakl "\n"
 #define MOD 1000000007
-#define lcstring(s) transform(all(s), s.begin(), ::tolower)
-#define ucstring(s) transform(all(s), s.begin(), ::toupper)
-#define lcchar(c) ((char) tolower(c))
-#define ucchar(c) ((char) toupper(c))
 
 // Uncomment the include files, namespace and type to use
 //typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> AVL;
@@ -61,74 +57,51 @@ ll lpow(ll x, int y) { if(!y)return 1;ll t=lpow(x,y/2);if(y&1)return(y>0)?x*t*t:
 int ipow(int x, int y) { if(!y)return 1;int t=ipow(x,y/2);if(y&1)return(y>0)?x*t*t:(t*t)/x;return t*t; }
 
 void split(vector<string> &tmp,string &line,char * buffer,char delim=' ') {
-	strcpy(buffer,line.c_str()); // buffer length must be at least |line| + 1
-	char * token = strtok(buffer,&delim);
-	while(token != 0) {
-		tmp.eb(string(token));
-		token = strtok(NULL,&delim);
-	}
+    strcpy(buffer,line.c_str());
+    char * token = strtok(buffer,&delim);
+    while(token != 0) {
+        tmp.eb(string(token));
+        token = strtok(NULL,&delim);
+    }
 }
 
 inline void fastio(int debug) {
-	if(debug) {
-		cout << "DEBUGGING MODE..." << endl;
-		freopen("in","r",stdin);
-	} else {
-		ios_base::sync_with_stdio(false), cin.tie(0);
-	}
+    if(debug) {
+        cout << "DEBUGGING MODE..." << endl;
+        freopen("in","r",stdin);
+    } else {
+        ios_base::sync_with_stdio(false), cin.tie(0);
+    }
 }
 
 // End of Template
 
 bool DRAFT = 1; // DO NOT REMOVE THIS LINE
 
-#define MAX_N 405
+int n;
+string s;
+char buffer[100005];
+vector<string> tmp;
 
-int n,m,q,x,y,w;
-int graph[MAX_N][MAX_N];
-
-void addEdge(int u,int v,int w) {
-	graph[u][v] = w;
-}
-
-void calc() {
-	repn(k,n) {
-		repn(i,n) {
-			repn(j,n) {
-				if(graph[i][k] == inf32 || graph[k][j] == inf32) continue;
-				if(graph[i][j] > graph[i][k] + graph[k][j]) {
-					graph[i][j] = graph[i][k] + graph[k][j];
-				}
-			}
-		}
-	}
-}
-
-int solve(int u,int v) {
-	if(graph[u][v] == inf32) {
-		return -1;
-	}
-	return graph[x][y];
+void convert(string &s) {
+    transform(all(s), s.begin(), ::tolower);
 }
 
 int main(void) {
-	fastio(0);
-	cin >> n >> m;
-	repn(i,n) repn(j,n) {
-		if(i == j) continue;
-		graph[i][j] = inf32;
-	}
-	repn(i,m) {
-		cin >> x >> y >> w;
-		x--,y--;
-		addEdge(x,y,w);
-	}
-	calc();
-	cin >> q;
-	repn(i,q) {
-		cin >> x >> y;
-		x--,y--;
-		cout << solve(x,y) << breakl;
-	}
-	return 0;
+    fastio(0);
+    cin >> n;
+    getline(cin,s); // dummy
+    repn(i,n) {
+        getline(cin,s);
+        tmp.clear();
+        split(tmp,s,buffer);
+        int ss = sz(tmp);
+        repn(i,ss-1) {
+            cout << (char)toupper(tmp[i][0]) << ". ";
+        }
+        string f = tmp[ss-1].substr(1);
+        convert(f);
+        cout << (char)toupper(tmp[ss-1][0]) << f << breakl;
+    }
+    return 0;
 }
