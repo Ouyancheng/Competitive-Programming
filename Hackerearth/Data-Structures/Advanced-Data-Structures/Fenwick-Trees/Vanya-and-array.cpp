@@ -92,7 +92,7 @@ bool DRAFT = 1; // DO NOT REMOVE THIS LINE
 
 // variables for fenwick tree
 int FT[MAX_N], n;
-int r[MAX_N],d[MAX_N],a[MAX_N],v[MAX_N],o[MAX_N],k;
+int a[MAX_N],v[MAX_N],o[MAX_N],k;
 ll ans;
 
 int queryFT(int i) {
@@ -114,9 +114,9 @@ void updateFT(int i,int d) {
 }
 
 bool cmp(int i,int j) {
-	if(r[i] > r[j])
+	if(a[i] > a[j])
 		return true;
-	else if(r[i] == r[j])
+	else if(a[i] == a[j])
 		return i < j;
 	return false;
 }
@@ -126,22 +126,16 @@ int main(void) {
 	cin >> n >> k;
 	repsn(i,1,n+1) {
 		cin >> a[i];
-		d[i] = a[i];
-	}
-	sort(d+1,d+n+1);
-	repsn(i,1,n+1) {
-		r[i] = lower_bound(d+1,d+n+1,a[i])-d;
 		o[i] = i;
 	}
 	sort(o+1,o+n+1,cmp);
 	repsn(i,1,n+1) {
-		int t = r[o[i]]; bool f = 0;
-		while(i <= n && r[o[i]] == t) {
-			f = 1;
+		int t = a[o[i]];
+		while(i <= n && a[o[i]] == t) {
 			v[o[i]] = queryFT(n)-queryFT(o[i]);
 			updateFT(o[i++],1);
 		}
-		i -= f;
+		i--;
 	}
 	sort(v+1,v+n+1);
 	int lo = 1, hi = n;
