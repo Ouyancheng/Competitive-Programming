@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 
-// This is a range-update range-query implementation of 1-d segment tree
+// This is a range-update range-query implementation of 1-d fenwick tree
 
 // Usage:
 // MAX_N: Maximum number of elements (starting from 1)
