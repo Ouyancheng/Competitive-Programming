@@ -58,10 +58,8 @@ int main() {
         if(s == "0") break;
         memset(pc,0,sizeof pc);
         bool ans = 1;
-        int n = 0;
         for(int i = 0; i < (int) s.length(); i++) {
             if(s[i] >= 'p' && s[i] <= 't') {
-                if(pc[s[i]-'p'] == 0) n++;
                 pc[s[i]-'p'] = 1;
             }
         }
