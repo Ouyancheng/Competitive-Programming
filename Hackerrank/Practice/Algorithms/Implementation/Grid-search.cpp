@@ -134,10 +134,10 @@ int main(void) {
 			cin >> pat;
 			buildKMP(pat,i);
 			repsn(ii,i,n-r+i+1) KMP(grid[ii],pat,ii,i);
-            if(sz(has[i])==0) {
-                repsn(j,i+1,r) cin >> pat;
-                break;
-            }
+			if(sz(has[i])==0) {
+				repsn(j,i+1,r) cin >> pat;
+				break;
+			}
 		}
 		if(sz(has[r-1])) cout << "YES" << breakl;
 		else cout << "NO" << breakl;
